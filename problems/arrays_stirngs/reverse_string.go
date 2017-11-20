@@ -1,3 +1,4 @@
+// Reverses a string including white space.
 package arrays_stirngs
 
 func reverseString(inStr string) string {
