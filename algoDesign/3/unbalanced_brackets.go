@@ -1,63 +1,68 @@
 package algoDesign
 
-import "strings"
+import (
+    "strings"
+    "Go-Practice/structures/stack"
+)
 
 type Node struct {
-    Value string
-    index int
-}
-
-type Stack struct {
-    nodes []*Node
-    count int
-}
-
-func NewStack() *Stack {
-    return &Stack{}
-}
-
-func (s *Stack) Push(n *Node) {
-    s.nodes = append(s.nodes[:s.count], n)
-    s.count++
-}
-
-func (s *Stack) Pop() *Node {
-    if s.count == 0 {
-        return nil
-    }
-    s.count--
-    return s.nodes[s.count]
+    value string
 }
 
 // Normally it would be best to check if the length is div by 2 and return non 0 if so. However, the
 // requirement is to return the index.
-func FindUnbalancedBracketIndex(brackets string) int {
+func FindUnbalancedBracketIndexStack(brackets string) int {
     if len(brackets) <= 0 {return -1}
 
     correspondingBrace := map[string]string {"[":"]", "(":")", "{":"}"}
-
-    stack := NewStack()
-
+    bracketStack := stack.NewStack()
     chars := strings.Split(brackets, "")
+    count := 0
 
     for i := 0; i < len(chars); i++ {
+        count++
         val, ok := correspondingBrace[chars[i]]
         if ok {
-            stack.Push(&Node{val, i})
+            bracketStack.Push(&stack.Element{val})
         } else {
-            popped := stack.Pop()
+            popped, err := bracketStack.Pop()
+            if err != nil {
+                return count - 1
+            }
+
             if popped == nil {
                 return i
             }
-            if chars[i] != popped.Value {
+            if chars[i] != popped.(*stack.Element).Value {
                 return i
             }
         }
     }
 
-    if len(chars) %2 != 0 && stack.count != 0 { // Final guard for a non div 2 count but all other matching.
-        return stack.Pop().index
-    }
-
     return -1
+}
+
+func FindUnbalancedBracketIndexIter(brackets string) int {
+    numOpen, badLocation := 0, 0
+
+    openBrack, closedBrack := int32(40), int32(41)
+
+    for i, c := range brackets {
+        if c == openBrack {
+            if numOpen == 0 {
+                badLocation = i
+            }
+            numOpen++
+        } else if c == closedBrack {
+            if numOpen == 0 {
+                return i
+            }
+            numOpen = numOpen - 1
+        }
+    }
+    if numOpen == 0 {
+        return -1
+    } else {
+        return badLocation
+    }
 }
