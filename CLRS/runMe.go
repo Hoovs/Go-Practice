@@ -4,6 +4,7 @@ import (
 	"github.com/Go-Practice/CLRS/trees"
 )
 
+
 func main() {
 	//toSort := []int{1,3,5,7,9,2,4,6,8,0}
 	//sorts.Quicksort(&toSort, 0, len(toSort) - 1)

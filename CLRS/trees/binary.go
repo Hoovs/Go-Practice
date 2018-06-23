@@ -1,5 +1,27 @@
 package trees
 
+
+type BinarySearchTree struct {
+}
+
+
+func (t BinarySearchTree) Add(val int){
+	println("BST")
+}
+
+func (t BinarySearchTree) Remove(val int) int {
+	return 0
+}
+
+func (t BinarySearchTree) Search(val int) bool {
+	return false
+}
+
+func NewBST() *BinarySearchTree {
+	return &BinarySearchTree{}
+}
+
+
 type Node struct {
 	Val int
 	Left, Right *Node
